@@ -15,6 +15,7 @@ Since single instruction is executed on multiple data, we can say that SIMD mach
 The code is written with Open-MPI 4.0.5. Therefore, installation of Open-MPI should be made before execution.
 For really big inputs, to avoid stack overflow, the following command is recommended:
 > ulimit -S -s 131072
+<!-- end of the list -->
 Then, directory with the cmpe300_mpi_2017400171.cpp file and test cases including the instances should be navigated. 
 After that, the commands below will be sufficient:
 * mpic++ -o cmpe300_mpi_2017400171 ./cmpe300_mpi_2017400171.cpp
