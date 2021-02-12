@@ -8,7 +8,7 @@ Relief algorithm works for eliminating the unnecessary features for a given clas
 In this Project, our aim was to implement a relief algorithm with the performance increasing effect of MPI (Message Passing Interface). 
 The program execution is conducted by of one master and several slave processors. Since there can be high number
 of instances to examine for feature selection, the job of examination should be shared among some additional processors. 
-Since single instruction is executed on multiple data, we can say that SIMD machine is used for this program.
+Since single instruction is executed on multiple data, we can say that SIMD (Single Instruction Multiple Data) machine is used for this program.
 
 ## Requirements and Execution
 
@@ -98,6 +98,37 @@ Slave P4 : 5 7
 Slave P5 : 0 3
 Master P0 : 0 2 3 5 7
 
+```
+## Implementation of Parallelism
+
+Parallel programs using MPI should be initiated with the following code segment.
+```
+    int rank; // rank of the current processor
+    int size; // total number of processors
+
+    MPI_Init(&argc, &argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank); // assigns the rank of the current processor
+    MPI_Comm_size(MPI_COMM_WORLD, &size); // assigns size to the total number of processors
+```
+
+Then program begins with master processor. Master starts to read input file and stores the instances, feature values, number of slaves, number of features to select etc.
+Obeying the working principle of SIMD machine, master processor distributes the input data to the slaves equally using `MPI_Scatter()`. `MPI_Scatter()` partitions a list of data and sends them to corresponding processors. Iteration count and number of features to select should also be passed to slaves, bu it is done with `MPI_Bcast` since such data should not be partitioned, it should just be distributed to all other processors.
+
+```
+    //MPI_SCATTER shares the partitions the data in "attributes" to instGetter in each processor  
+    MPI_Scatter(attributes,instPerProcessor*A,MPI_FLOAT,instGetter,instPerProcessor*A,MPI_FLOAT,0,MPI_COMM_WORLD);
+    //MPI_SCATTER shares the partitions the data in "classes" to classGetter in each processor 
+    MPI_Scatter(classes,instPerProcessor,MPI_INT,classGetter,instPerProcessor,MPI_INT,0,MPI_COMM_WORLD);
+    //Broadcast M and T
+    MPI_Bcast(&M,1,MPI_INT,0,MPI_COMM_WORLD);
+    MPI_Bcast(&T,1,MPI_INT,0,MPI_COMM_WORLD);
+```
+
+After data distribution, slaves and master executes different parts of the code. Each processor has an assigned rank, and rank for master is 0. Hence, `if(rank==0)` is a good indicator for master and slave seperation. Slaves apply the relief algorithm with their own data in parallel. However, the relief algorithm is not our main focus here. When slaves complete their job, master collects the results with 
+
+```
+    //MPI_GATHER accumulates the results from each processor
+    MPI_Gather(result, T,MPI_INT,featureGather,T,MPI_INT,0,MPI_COMM_WORLD);
 ```
 
 
