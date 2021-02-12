@@ -16,10 +16,10 @@ The code is written with Open-MPI 4.0.5. Therefore, installation of Open-MPI sho
 For really big inputs, to avoid stack overflow, the following command is recommended:
 > ulimit -S -s 131072
 <!-- end of the list -->
-Then, directory with the cmpe300_mpi_2017400171.cpp file and test cases including the instances should be navigated. 
+Then, directory with the mpi_relief.cpp file and test cases including the instances should be navigated. 
 After that, the commands below will be sufficient:
-* mpic++ -o cmpe300_mpi_2017400171 ./cmpe300_mpi_2017400171.cpp
-* mpirun --oversubscribe -np <P> cmpe300_mpi_2017400171 <inputfile>
+* mpic++ -o mpi_relief ./mpi_relief.cpp
+* mpirun --oversubscribe -np <P> mpi_relief <inputfile>
 <!-- end of the list -->
 where P is number of processors to use and input file is the relative path for input file. \
 Input file should include:
