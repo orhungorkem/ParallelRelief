@@ -19,9 +19,9 @@ For really big inputs, to avoid stack overflow, the following command is recomme
 Then, directory with the mpi_relief.cpp file and test cases including the instances should be navigated. 
 After that, the commands below will be sufficient:
 * mpic++ -o mpi_relief ./mpi_relief.cpp
-* mpirun --oversubscribe -np <P> mpi_relief <inputfile>
+* mpirun --oversubscribe -np <num_of_processors> mpi_relief <inputfile>
 <!-- end of the list -->
-where P is number of processors to use and input file is the relative path for input file. \
+where input file is the relative path for input file. \
 Input file should include:
 * Number of processors to use : P
 * Number of instances to apply relief : N
