@@ -124,11 +124,13 @@ Obeying the working principle of SIMD machine, master processor distributes the 
     MPI_Bcast(&T,1,MPI_INT,0,MPI_COMM_WORLD);
 ```
 
-After data distribution, slaves and master executes different parts of the code. Each processor has an assigned rank, and rank for master is 0. Hence, `if(rank==0)` is a good indicator for master and slave seperation. Slaves apply the relief algorithm with their own data in parallel. However, the relief algorithm is not our main focus here. When slaves complete their job, master collects the results with 
+After data distribution, slaves and master execute different parts of the code. Each processor has an assigned rank, and rank for master is 0. Hence, `if(rank==0)` is a good indicator for master and slave seperation. Slaves apply the relief algorithm with their own data in parallel. However, the relief algorithm is not our main focus here. When slaves complete their job, master collects the results with 
 
 ```
     //MPI_GATHER accumulates the results from each processor
     MPI_Gather(result, T,MPI_INT,featureGather,T,MPI_INT,0,MPI_COMM_WORLD);
 ```
+Selected features are available for the master now.
+
 
 
